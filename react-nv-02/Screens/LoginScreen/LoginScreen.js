@@ -62,7 +62,6 @@ export const LoginScreen = () => {
             />
             <TouchableOpacity
               activeOpacity={0.8}
-              title="Увійти"
               style={styles.button}
               onPress={onLogin}
             >
@@ -115,26 +114,18 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    height: 50,
-    fontFamily: "Roboto",
-    fontStyle: "normal",
-    fontSize: 16,
-    lineHeight: 19,
-    textAlign: "center",
-    marginTop: 43,
-    paddingHorizontal: 16,
-    paddingVertical: 32,
-    gap: 12,
-    borderWidth: 1,
-    borderColor: "#FF6C00",
-    borderRadius: 100,
     backgroundColor: "#FF6C00",
-    color: "#ffffff",
+    alignItems: "center",
+    height: 51,
+    justifyContent: "center",
+    borderRadius: 100,
+    marginTop: 43,
+    marginBottom: 16,
   },
 
   btnTitle: {
+    color: "#FFFFFF",
     fontFamily: "Roboto-Bold",
-    color: "#ffffff",
     fontSize: 16,
   },
 

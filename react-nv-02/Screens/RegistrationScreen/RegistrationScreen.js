@@ -90,7 +90,6 @@ export const RegistrationScreen = () => {
             />
             <TouchableOpacity
               activeOpacity={0.8}
-              title="Зареєструватися"
               style={styles.button}
               onPress={keyboardHide}
             >
@@ -142,28 +141,18 @@ const styles = StyleSheet.create({
     color: "#212121",
   },
   button: {
-    height: 50,
-    fontStyle: "normal",
-    fontSize: 16,
-    lineHeight: 19,
-    textAlign: "center",
-    color: "#ffffff",
-    fontFamily: "Roboto-Regular",
-    marginTop: 43,
-    paddingHorizontal: 16,
-    paddingVertical: 32,
-    gap: 12,
-    borderWidth: 1,
-    ...Platform.select({
-      ios: { borderColor: "#FF6C00", backgroundColor: "transparent" },
-      android: { borderColor: "#FF6C00", backgroundColor: "#FF6C00" },
-    }),
+    backgroundColor: "#FF6C00",
+    alignItems: "center",
+    height: 51,
+    justifyContent: "center",
     borderRadius: 100,
+    marginTop: 43,
+    marginBottom: 16,
   },
 
   btnTitle: {
     fontFamily: "Roboto-Bold",
-    color: "#ffffff",
+    color: "#FFFFFF",
     fontSize: 16,
   },
 
