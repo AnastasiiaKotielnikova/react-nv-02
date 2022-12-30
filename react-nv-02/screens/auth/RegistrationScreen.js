@@ -18,7 +18,7 @@ const initialState = {
   password: "",
 };
 
-export const RegistrationScreen = () => {
+export default function RegistrationScreen({ navigation }) {
   console.log(Platform.OS);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [state, setstate] = useState(initialState);
@@ -48,60 +48,68 @@ export const RegistrationScreen = () => {
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
       <View style={styles.container}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS == "ios" ? "padding" : "height"}
+        <ImageBackground
+          style={styles.image}
+          source={require("./images/Photo_BG.jpg")}
         >
-          <View
-            style={{
-              ...styles.form,
-              marginBottom: isShowKeyboard ? 0 : 0,
-              paddingBottom: isShowKeyboard ? 32 : 78,
-              width: dimensions,
-            }}
+          <KeyboardAvoidingView
+            behavior={Platform.OS == "ios" ? "padding" : "height"}
           >
-            <Text style={styles.title}>Реєстрація</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Логін"
-              value={state.name}
-              onFocus={() => setIsShowKeyboard(true)}
-              onChangeText={(value) =>
-                setstate((prevState) => ({ ...prevState, name: value }))
-              }
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Адреса електронної пошти"
-              value={state.email}
-              onFocus={() => setIsShowKeyboard(true)}
-              onChangeText={(value) =>
-                setstate((prevState) => ({ ...prevState, email: value }))
-              }
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Пароль"
-              value={state.password}
-              secureTextEntry={true}
-              onFocus={() => setIsShowKeyboard(true)}
-              onChangeText={(value) =>
-                setstate((prevState) => ({ ...prevState, password: value }))
-              }
-            />
-            <TouchableOpacity
-              activeOpacity={0.8}
-              style={styles.button}
-              onPress={keyboardHide}
+            <View
+              style={{
+                ...styles.form,
+                marginBottom: isShowKeyboard ? 0 : 0,
+                paddingBottom: isShowKeyboard ? 32 : 78,
+                width: dimensions,
+              }}
             >
-              <Text style={styles.btnTitle}>Зареєструватися</Text>
-            </TouchableOpacity>
-            <Text style={styles.text}>Вже маєте акаунт? Увійти</Text>
-          </View>
-        </KeyboardAvoidingView>
+              <Text style={styles.title}>Реєстрація</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Логін"
+                value={state.name}
+                onFocus={() => setIsShowKeyboard(true)}
+                onChangeText={(value) =>
+                  setstate((prevState) => ({ ...prevState, name: value }))
+                }
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Адреса електронної пошти"
+                value={state.email}
+                onFocus={() => setIsShowKeyboard(true)}
+                onChangeText={(value) =>
+                  setstate((prevState) => ({ ...prevState, email: value }))
+                }
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Пароль"
+                value={state.password}
+                secureTextEntry={true}
+                onFocus={() => setIsShowKeyboard(true)}
+                onChangeText={(value) =>
+                  setstate((prevState) => ({ ...prevState, password: value }))
+                }
+              />
+              <TouchableOpacity
+                activeOpacity={0.8}
+                style={styles.button}
+                onPress={keyboardHide}
+              >
+                <Text style={styles.btnTitle}>Зареєструватися</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Login")}
+              ></TouchableOpacity>
+              <Text style={styles.text}>Вже маєте акаунт? Увійти</Text>
+            </View>
+          </KeyboardAvoidingView>
+        </ImageBackground>
       </View>
     </TouchableWithoutFeedback>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -120,6 +128,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 30,
     fontFamily: "Roboto-Bold",
+  },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    alignItems: "center",
+    justifyContent: "center",
   },
   form: {
     marginHorizontal: 16,
