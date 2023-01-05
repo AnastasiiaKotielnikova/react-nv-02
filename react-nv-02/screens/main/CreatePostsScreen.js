@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-const CreatePostsScreen = () => {
+const CreatePostsScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text>CreatePostsScreen</Text>

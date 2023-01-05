@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   KeyboardAvoidingView,
   Keyboard,
   Platform,
   StyleSheet,
+  ImageBackground,
   Text,
   TextInput,
   TouchableWithoutFeedback,
@@ -18,7 +19,6 @@ const initialState = {
 };
 
 export default function LoginScreen({ navigation }) {
-  console.log("navigation", navigation);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
 
@@ -37,19 +37,24 @@ export default function LoginScreen({ navigation }) {
     };
   }, []);
 
-  const onLogin = () => {
+  const keyboardHide = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
-    console.log(state);
+  };
+
+  const handleSubmit = () => {
+    setIsShowKeyboard(false);
+    Keyboard.dismiss();
+    console.log("submit state: ", state);
     setState(initialState);
   };
 
   return (
-    <TouchableWithoutFeedback onPress={onLogin}>
+    <TouchableWithoutFeedback onPress={keyboardHide}>
       <View style={styles.container}>
         <ImageBackground
           style={styles.image}
-          source={require("./images/Photo_BG.jpg")}
+          source={require("../../images/Photo_BG.jpg")}
         >
           <KeyboardAvoidingView
             behavior={Platform.OS == "ios" ? "padding" : "height"}
@@ -57,8 +62,7 @@ export default function LoginScreen({ navigation }) {
             <View
               style={{
                 ...styles.form,
-                marginBottom: isShowKeyboard ? 0 : 0,
-                paddingBottom: isShowKeyboard ? 32 : 78,
+                marginBottom: isShowKeyboard ? 20 : 150,
                 width: dimensions,
               }}
             >
@@ -68,7 +72,6 @@ export default function LoginScreen({ navigation }) {
                 placeholder="Адреса електронної пошти"
                 style={styles.input}
                 onFocus={() => setIsShowKeyboard(true)}
-                onChange={(nativeEvent) => console.log(nativeEvent)}
                 onChangeText={(value) =>
                   setState((prevState) => ({ ...prevState, email: value }))
                 }
@@ -86,14 +89,16 @@ export default function LoginScreen({ navigation }) {
               <TouchableOpacity
                 activeOpacity={0.8}
                 style={styles.button}
-                onPress={onLogin}
+                onPress={handleSubmit}
               >
                 <Text style={styles.btnTitle}>Увійти</Text>
               </TouchableOpacity>
               <TouchableOpacity
+                activeOpacity={0.8}
                 onPress={() => navigation.navigate("Registration")}
-              ></TouchableOpacity>
-              <Text style={styles.text}>Немає акаунта? Зареєструватись</Text>
+              >
+                <Text style={styles.text}>Немає аккаунта? Зареєструватись</Text>
+              </TouchableOpacity>
             </View>
           </KeyboardAvoidingView>
         </ImageBackground>
@@ -105,26 +110,21 @@ export default function LoginScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: "100%",
-    marginTop: "66%",
-    paddingHorizontal: 16,
     backgroundColor: "#fff",
-    borderTopStartRadius: 25,
-    borderTopEndRadius: 25,
-    justifyContent: "space-between",
   },
   title: {
-    marginTop: 32,
-    marginBottom: 33,
+    marginTop: 92,
+    marginBottom: 32,
     color: "#212121",
     textAlign: "center",
     fontSize: 30,
+    fontFamily: "Roboto-Bold",
   },
   image: {
     flex: 1,
     resizeMode: "cover",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-end",
   },
   form: {
     marginHorizontal: 16,

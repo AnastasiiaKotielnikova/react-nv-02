@@ -3,6 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
+  ImageBackground,
   TextInput,
   TouchableOpacity,
   Platform,
@@ -21,7 +22,7 @@ const initialState = {
 export default function RegistrationScreen({ navigation }) {
   console.log(Platform.OS);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
-  const [state, setstate] = useState(initialState);
+  const [state, setState] = useState(initialState);
 
   const [dimensions, setDimensions] = useState(
     Dimensions.get("window").width - 16 * 2
@@ -41,8 +42,13 @@ export default function RegistrationScreen({ navigation }) {
   const keyboardHide = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
-    console.log(state);
-    setstate(initialState);
+  };
+
+  const handleSubmit = () => {
+    setIsShowKeyboard(false);
+    Keyboard.dismiss();
+    console.log("registration state: ", state);
+    setState(initialState);
   };
 
   return (
@@ -50,7 +56,7 @@ export default function RegistrationScreen({ navigation }) {
       <View style={styles.container}>
         <ImageBackground
           style={styles.image}
-          source={require("./images/Photo_BG.jpg")}
+          source={require("../../images/Photo_BG.jpg")}
         >
           <KeyboardAvoidingView
             behavior={Platform.OS == "ios" ? "padding" : "height"}
@@ -58,8 +64,7 @@ export default function RegistrationScreen({ navigation }) {
             <View
               style={{
                 ...styles.form,
-                marginBottom: isShowKeyboard ? 0 : 0,
-                paddingBottom: isShowKeyboard ? 32 : 78,
+                marginBottom: isShowKeyboard ? 20 : 150,
                 width: dimensions,
               }}
             >
@@ -70,7 +75,7 @@ export default function RegistrationScreen({ navigation }) {
                 value={state.name}
                 onFocus={() => setIsShowKeyboard(true)}
                 onChangeText={(value) =>
-                  setstate((prevState) => ({ ...prevState, name: value }))
+                  setState((prevState) => ({ ...prevState, name: value }))
                 }
               />
               <TextInput
@@ -79,7 +84,7 @@ export default function RegistrationScreen({ navigation }) {
                 value={state.email}
                 onFocus={() => setIsShowKeyboard(true)}
                 onChangeText={(value) =>
-                  setstate((prevState) => ({ ...prevState, email: value }))
+                  setState((prevState) => ({ ...prevState, email: value }))
                 }
               />
               <TextInput
@@ -89,20 +94,22 @@ export default function RegistrationScreen({ navigation }) {
                 secureTextEntry={true}
                 onFocus={() => setIsShowKeyboard(true)}
                 onChangeText={(value) =>
-                  setstate((prevState) => ({ ...prevState, password: value }))
+                  setState((prevState) => ({ ...prevState, password: value }))
                 }
               />
               <TouchableOpacity
                 activeOpacity={0.8}
                 style={styles.button}
-                onPress={keyboardHide}
+                onPress={handleSubmit}
               >
                 <Text style={styles.btnTitle}>Зареєструватися</Text>
               </TouchableOpacity>
               <TouchableOpacity
+                activeOpacity={0.8}
                 onPress={() => navigation.navigate("Login")}
-              ></TouchableOpacity>
-              <Text style={styles.text}>Вже маєте акаунт? Увійти</Text>
+              >
+                <Text style={styles.text}>Вже маєте аккаунт? Увійти</Text>
+              </TouchableOpacity>
             </View>
           </KeyboardAvoidingView>
         </ImageBackground>
@@ -114,12 +121,7 @@ export default function RegistrationScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: "100%",
-    marginTop: "66%",
     backgroundColor: "#ffffff",
-    borderTopLeftRadius: 25,
-    borderTopRightRadius: 25,
-    justifyContent: "space-between",
   },
   title: {
     marginTop: 92,
@@ -132,8 +134,8 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     resizeMode: "cover",
+    justifyContent: "flex-end",
     alignItems: "center",
-    justifyContent: "center",
   },
   form: {
     marginHorizontal: 16,
