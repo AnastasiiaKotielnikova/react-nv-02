@@ -1,20 +1,7 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { Text, Button } from "react-native";
 
-const ProfileScreen = ({ navigation }) => {
+export default function ProfileScreen({ navigation }) {
   return (
-    <View style={styles.container}>
-      <Text>ProfileScreen</Text>
-    </View>
+    <Button title="go to map" onPress={() => navigation.navigate("Map")} />
   );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
-
-export default ProfileScreen;
+}
