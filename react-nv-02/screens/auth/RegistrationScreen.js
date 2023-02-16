@@ -12,17 +12,21 @@ import {
   TouchableWithoutFeedback,
   Dimensions,
 } from "react-native";
+import { useDispatch } from "react-redux";
+
+import { authSignUpUser } from "../../redux/auth/authOperations";
 
 const initialState = {
-  name: "",
+  login: "",
   email: "",
   password: "",
 };
 
 export default function RegistrationScreen({ navigation }) {
-  console.log(Platform.OS);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [state, setState] = useState(initialState);
+
+  const dispatch = useDispatch();
 
   const [dimensions, setDimensions] = useState(
     Dimensions.get("window").width - 16 * 2
@@ -48,6 +52,7 @@ export default function RegistrationScreen({ navigation }) {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
     console.log("registration state: ", state);
+    dispatch(authSignUpUser(state));
     setState(initialState);
   };
 
@@ -72,10 +77,10 @@ export default function RegistrationScreen({ navigation }) {
               <TextInput
                 style={styles.input}
                 placeholder="Логін"
-                value={state.name}
+                value={state.login}
                 onFocus={() => setIsShowKeyboard(true)}
                 onChangeText={(value) =>
-                  setState((prevState) => ({ ...prevState, name: value }))
+                  setState((prevState) => ({ ...prevState, login: value }))
                 }
               />
               <TextInput

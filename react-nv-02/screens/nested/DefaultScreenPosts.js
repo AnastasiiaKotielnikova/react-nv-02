@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, FlatList, Image, Button } from "react-native";
 
-export const DefaultPostScreen = ({ route, navigation }) => {
+export const DefaultScreenPosts = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
   console.log("route.params", route.params);
 
@@ -11,7 +11,6 @@ export const DefaultPostScreen = ({ route, navigation }) => {
     }
   }, [route.params]);
   console.log("posts", posts);
-
   return (
     <View style={styles.container}>
       <FlatList

@@ -8,7 +8,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 
 const AuthStack = createStackNavigator();
-const MainTab = createBottomTabNavigator();
+const MainStack = createBottomTabNavigator();
 
 import RegistrationScreen from "./screens/auth/RegistrationScreen";
 import LoginScreen from "./screens/auth/LoginScreen";
@@ -36,7 +36,7 @@ export const useRoute = (isAuth) => {
     );
   }
   return (
-    <MainTab.Navigator tabBarOptions={{ showLabel: false }}>
+    <MainStack.Navigator tabBarOptions={{ showLabel: false }}>
       <MainStack.Screen
         options={{
           headerShown: false,
@@ -67,7 +67,7 @@ export const useRoute = (isAuth) => {
         name="Profile"
         component={ProfileScreen}
       ></MainStack.Screen>
-    </MainTab.Navigator>
+    </MainStack.Navigator>
   );
 };
 

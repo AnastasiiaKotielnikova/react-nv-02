@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
+import { Camera } from "expo-camera";
+import { EvilIcons } from "@expo/vector-icons";
 import {
   StyleSheet,
   TouchableWithoutFeedback,
@@ -8,14 +10,23 @@ import {
   View,
   Image,
 } from "react-native";
-import { Camera } from "expo-camera";
-import { EvilIcons } from "@expo/vector-icons";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import * as Location from "expo-location";
+import { uuidv4 } from "@firebase/util";
+import { storage, db } from "../../firebase/config";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { useSelector } from "react-redux";
+import { collection, addDoc } from "firebase/firestore";
+import { Firestore } from "firebase/firestore";
 
 const CreatePostsScreen = ({ navigation }) => {
+  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [camera, setCamera] = useState(null);
   const [photo, setPhoto] = useState(null);
+  const [comment, setComment] = useState("");
+  const [location, setLocation] = useState(null);
+
+  const { userId, login } = useSelector((state) => state.auth);
 
   const takePhoto = async () => {
     const photo = await camera.takePictureAsync();
@@ -27,8 +38,51 @@ const CreatePostsScreen = ({ navigation }) => {
   };
 
   const sendPhoto = () => {
-    navigation.navigate("DefaultPostScreen", { photo });
+    uploadPostToServer();
+    navigation.navigate("DefaultScreenPosts", { photo });
   };
+
+  const uploadPhotoToServer = async () => {
+    const response = await fetch(photo);
+    const file = await response.blob();
+    const photoId = uuidv4();
+    console.log("photoId:", photoId);
+    const storageRef = ref(storage, `postImage/${photoId}`);
+    await uploadBytes(storageRef, file);
+
+    const photoUrl = await getDownloadURL(ref(storage, `postImage/${photoId}`));
+    console.log("photoUrl:", photoUrl);
+    return photoUrl;
+  };
+
+  const uploadPostToServer = async () => {
+    const photo = await uploadPhotoToServer();
+    console.log(location);
+
+    try {
+      const docRef = await addDoc(collection(db, "posts"), {
+        userId,
+        login,
+        location,
+        photo,
+        comment,
+      });
+      console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  };
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permission to access location was denied");
+      }
+      let locationRes = await Location.getCurrentPositionAsync();
+      setLocation(locationRes);
+    })();
+  }, []);
 
   const keyboardHide = () => {
     setIsShowKeyboard(false);
@@ -58,7 +112,7 @@ const CreatePostsScreen = ({ navigation }) => {
             }}
           >
             <View>
-              <TextInput style={styles.input} />
+              <TextInput style={styles.input} onChangeText={setComment} />
             </View>
             <TextInput
               style={styles.input}
